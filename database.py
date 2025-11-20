@@ -36,7 +36,9 @@ for request in data["results"]:
     values.insert(-1, id.hexdigest())
     req = models.ServiceRequest(*(values[:-1]))  # Ignoring geom parameter from API
     cur.execute(
-        """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
+           close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
         astuple(req),
     )
     con.commit()
