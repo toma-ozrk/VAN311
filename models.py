@@ -15,3 +15,4 @@ class ServiceRequest:
     channel: str
     lat: str
     lon: str
+    id: str
