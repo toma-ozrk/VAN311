@@ -19,7 +19,7 @@ cur = con.cursor()
 cur.execute(
     """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,
     status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
-    address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT)"""
+    address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
 )
 
 for request in data["results"]:
