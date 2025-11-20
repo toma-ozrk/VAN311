@@ -1,9 +1,7 @@
 vancouver.db
-temp
+internal_test
 __pycache__
 .venv
 .DS
 .env
 .DS_Store
-.pytest_cache
-ARCHIVE
