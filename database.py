@@ -8,7 +8,7 @@ import requests
 import models
 
 r = requests.get(
-    "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records?order_by=service_request_open_timestamp%20DESC&limit=5"
+    "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records?order_by=last_modified_timestamp%20DESC&limit=4&offset=0"
 )
 
 data = json.loads(r.text)
