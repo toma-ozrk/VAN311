@@ -7,6 +7,7 @@ from time import sleep
 
 import requests
 from dateutil.relativedelta import relativedelta
+from tqdm import tqdm
 
 import models
 
@@ -18,6 +19,9 @@ cur.execute(
     status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
     address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
 )
+
+# progress bar :D
+pbar = tqdm(total=590, desc="😋 Seeding Database")
 
 for i in reversed(range(0, 3)):
     dt = date.today() - relativedelta(months=i)
@@ -54,10 +58,12 @@ for i in reversed(range(0, 3)):
             )
             con.commit()
 
-        sleep(1.5)
+        sleep(2)
+        pbar.update(1)
         if len(data["results"]) < 100:
             break
 
-        print(f"inserted {j * 100} items")
-
         j += 1
+
+pbar.close()
+print("Task completed!")
