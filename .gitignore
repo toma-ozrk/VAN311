@@ -1,0 +1,7 @@
+vancouver.db
+test
+__pycache__
+.venv
+.DS
+.env
+.DS_Store
