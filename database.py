@@ -1,57 +1,59 @@
-import hashlib
 import json
 import sqlite3
 from dataclasses import astuple
 
 import requests
 
-import models
+from models import ServiceRequest
 
-r = requests.get(
-    "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records?order_by=last_modified_timestamp%20DESC&limit=4&offset=0"
-)
 
-data = json.loads(r.text)
+def get_db_connection():
+    DB_NAME = "vancouver.db"
+    con = sqlite3.connect(DB_NAME)
+    return con
 
-con = sqlite3.connect("vancouver.db")
+
+def fetch_latest_requests(limit: int = 5, offset: int = 0):
+    BASE_URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records"
+
+    params = {
+        "order_by": "last_modified_timestamp DESC",
+        "limit": limit,
+        "offset": offset,
+    }
+
+    try:
+        r = requests.get(BASE_URL, params)
+        r.raise_for_status()
+        data = json.loads(r.text)
+        return data["results"]
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error during API fetch: {e}")
+        return []
+
+
+def upsert_service_requests(con, requests_data: list):
+    cur = con.cursor()
+
+    for request in requests_data:
+        req = ServiceRequest.dict_to_service_request(request)
+
+        cur.execute(
+            """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+               ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
+               close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
+            astuple(req),
+        )
+        con.commit()
+
+
+con = get_db_connection()
+data = fetch_latest_requests()
 cur = con.cursor()
-
 cur.execute(
     """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,
     status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
     address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
 )
-
-for request in data["results"]:
-    # id hashing for each service request
-    key = (
-        request["department"]
-        + request["service_request_type"]
-        + request["service_request_open_timestamp"]
-    )
-    unique_id = (hashlib.sha256(key.encode("utf-8"))).hexdigest()
-
-    # parsing
-    req = models.ServiceRequest(
-        department=request["department"],
-        issue_type=request["service_request_type"],
-        status=request["status"],
-        closure_reason=request["closure_reason"],
-        open_ts=request["service_request_open_timestamp"],
-        close_ts=request["service_request_close_date"],
-        last_modified=request["last_modified_timestamp"],
-        address=request["address"],
-        local_area=request["local_area"],
-        channel=request["channel"],
-        lat=request["latitude"],
-        lon=request["longitude"],
-        id=unique_id,
-    )  # Ignoring geom parameter from API
-
-    cur.execute(
-        """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-           ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
-           close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
-        astuple(req),
-    )
-    con.commit()
+upsert_service_requests(con, data)
