@@ -29,12 +29,25 @@ for request in data["results"]:
         + request["service_request_type"]
         + request["service_request_open_timestamp"]
     )
-    id = hashlib.sha256(key.encode("utf-8"))
+    unique_id = (hashlib.sha256(key.encode("utf-8"))).hexdigest()
 
     # parsing
-    values = list(request.values())
-    values.insert(-1, id.hexdigest())
-    req = models.ServiceRequest(*(values[:-1]))  # Ignoring geom parameter from API
+    req = models.ServiceRequest(
+        department=request["department"],
+        issue_type=request["service_request_type"],
+        status=request["status"],
+        closure_reason=request["closure_reason"],
+        open_ts=request["service_request_open_timestamp"],
+        close_ts=request["service_request_close_date"],
+        last_modified=request["last_modified_timestamp"],
+        address=request["address"],
+        local_area=request["local_area"],
+        channel=request["channel"],
+        lat=request["latitude"],
+        lon=request["longitude"],
+        id=unique_id,
+    )  # Ignoring geom parameter from API
+
     cur.execute(
         """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
