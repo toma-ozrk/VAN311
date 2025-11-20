@@ -23,9 +23,7 @@ cur.execute(
 
 for request in data["results"]:
     values = list(request.values())
-    req = models.ServiceRequest(*(values[:-1]))
-    # print(astuple(req))
-    # break
+    req = models.ServiceRequest(*(values[:-1]))  # Ignoring geom parameter from API
     cur.execute(
         """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         astuple(req),
