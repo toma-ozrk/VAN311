@@ -1,9 +1,7 @@
-import json
 import sqlite3
 from dataclasses import astuple
 
-import requests
-
+from van311.api import fetch_latest_requests
 from van311.models import ServiceRequest
 
 
@@ -11,26 +9,6 @@ def get_db_connection(db_name="../vancouver.db"):
     con = sqlite3.connect(db_name)
     con.row_factory = sqlite3.Row
     return con
-
-
-def fetch_latest_requests(limit: int = 5, offset: int = 0):
-    BASE_URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records"
-
-    params = {
-        "order_by": "last_modified_timestamp DESC",
-        "limit": limit,
-        "offset": offset,
-    }
-
-    try:
-        r = requests.get(BASE_URL, params)
-        r.raise_for_status()
-        data = json.loads(r.text)
-        return data["results"]
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error during API fetch: {e}")
-        return []
 
 
 def upsert_service_requests(con, requests_data: list):
