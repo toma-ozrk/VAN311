@@ -3,12 +3,11 @@ import sqlite3
 from dataclasses import astuple
 
 import requests
-
 from models import ServiceRequest
 
 
 def get_db_connection():
-    DB_NAME = "vancouver.db"
+    DB_NAME = "../vancouver.db"
     con = sqlite3.connect(DB_NAME)
     return con
 
