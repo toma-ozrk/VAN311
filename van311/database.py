@@ -12,12 +12,10 @@ def get_db_connection(db_name="../vancouver.db"):
 
 
 def upsert_service_requests(con, requests_data: list):
-    cur = con.cursor()
-
     for request in requests_data:
         req = ServiceRequest.dict_to_service_request(request)
 
-        cur.execute(
+        con.execute(
             """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
                close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
