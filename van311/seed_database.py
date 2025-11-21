@@ -1,14 +1,13 @@
 import json
 from dataclasses import astuple
-from datetime import date
 from time import sleep
 
 import requests
-from dateutil.relativedelta import relativedelta
 from tqdm import tqdm
 
 from van311.database import get_db_connection
 from van311.models import ServiceRequest
+from van311.utils import subtract_months_from_today
 
 
 def create_db_table(con):
@@ -18,13 +17,6 @@ def create_db_table(con):
         status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
         address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
     )
-
-
-def subtract_months_from_today(n):
-    dt = date.today() - relativedelta(months=n)
-    month = dt.month
-    year = dt.year
-    return (month, year)
 
 
 def fetch_seeding_requests(offset, month, year):
