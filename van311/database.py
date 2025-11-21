@@ -3,12 +3,13 @@ import sqlite3
 from dataclasses import astuple
 
 import requests
-from models import ServiceRequest
+
+from van311.models import ServiceRequest
 
 
-def get_db_connection():
-    DB_NAME = "../vancouver.db"
-    con = sqlite3.connect(DB_NAME)
+def get_db_connection(db_name="../vancouver.db"):
+    con = sqlite3.connect(db_name)
+    con.row_factory = sqlite3.Row
     return con
 
 
