@@ -1,7 +1,7 @@
 import sqlite3
 from dataclasses import astuple
 
-from van311.api import fetch_latest_requests
+from van311.api import fetch_requests
 from van311.models import ServiceRequest
 
 
@@ -25,7 +25,7 @@ def upsert_service_requests(con, requests_data: list):
 
 
 con = get_db_connection()
-data = fetch_latest_requests()
+data = fetch_requests()
 cur = con.cursor()
 cur.execute(
     """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,

@@ -5,6 +5,7 @@ from time import sleep
 import requests
 from tqdm import tqdm
 
+from van311.api import fetch_requests
 from van311.database import get_db_connection
 from van311.models import ServiceRequest
 from van311.utils import subtract_months_from_today
@@ -50,7 +51,7 @@ def seed_database(con):
         j = 0
         while True:
             offset = j * 100
-            data = fetch_seeding_requests(offset, 8, 2024)
+            data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
 
             for request in data:
                 req = ServiceRequest.dict_to_service_request(request)
