@@ -2,11 +2,7 @@ import sqlite3
 
 import pytest
 
-from van311.database import (
-    fetch_latest_requests,
-    get_db_connection,
-    upsert_service_requests,
-)
+from van311.database import get_db_connection
 
 
 def test_get_db_connection():
