@@ -4,11 +4,10 @@ from datetime import date
 from time import sleep
 
 import requests
-from dateutil.relativedelta import relativedelta
-from tqdm import tqdm
-
 from database import get_db_connection
+from dateutil.relativedelta import relativedelta
 from models import ServiceRequest
+from tqdm import tqdm
 
 
 def create_db_table(con):
