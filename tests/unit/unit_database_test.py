@@ -3,7 +3,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from van311.database import get_db_connection, upsert_service_requests
+from van311.database import get_db_connection, upsert_page_data
+from van311.models import ServiceRequest
 
 
 def test_get_db_connection():
@@ -45,23 +46,55 @@ MOCK_SUCCESS_DATA = [
 ]
 
 
-@patch("van311.database.get_db_connection")
-def test_upsert_service_requests(mock_get_conn):
-    mock_conn = Mock()
-    mock_cursor = Mock()
+@patch("van311.database.ServiceRequest")
+def test_upsert_page_data(mock_request):
+    input_data = [
+        {"id": "1", "value": "1"},
+        {"id": "2", "value": "2"},
+        {"id": "3", "value": "3"},
+        {"id": "4", "value": "4"},
+        {"id": "5", "value": "5"},
+        {"id": "6", "value": "6"},
+        {"id": "7", "value": "7"},
+        {"id": "8", "value": "8"},
+        {"id": "9", "value": "9"},
+        {"id": "10", "value": "10"},
+        {"id": "11", "value": "11"},
+        {"id": "12", "value": "12"},
+        {"id": "13", "value": "13"},
+    ]
 
-    mock_conn.cursor.return_value = mock_cursor
+    service_request_params = (
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+    )
 
-    upsert_service_requests(mock_conn, MOCK_SUCCESS_DATA)
+    mock_con = Mock()
+    mock_request.dict_to_service_request.return_value = ServiceRequest(
+        *service_request_params
+    )
 
-    mock_conn.execute.assert_called_once()
+    upsert_page_data(mock_con, input_data)
 
-    call_args, call_kwargs = mock_conn.execute.call_args
+    assert mock_request.dict_to_service_request.call_count == 13
+    assert mock_con.execute.call_count == 13
+
+    call_args, _ = mock_con.execute.call_args
     actual_sql = call_args[0]
-    actual_params = call_args[1]
+    actual_parameters = call_args[1]
 
-    assert actual_sql.startswith("""INSERT INTO service_requests""")
-    assert actual_params == tuple(MOCK_SUCCESS_DATA[0].values())
-
-    mock_conn.commit.assert_called_once()
-    mock_conn.close.assert_called_once()
+    assert actual_sql.startswith("INSERT INTO service_requests"), (
+        "SQL should insert into service requests"
+    )
+    assert actual_parameters == service_request_params
