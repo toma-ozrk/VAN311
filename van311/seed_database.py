@@ -1,13 +1,9 @@
-import json
-from dataclasses import astuple
 from time import sleep
 
-import requests
 from tqdm import tqdm
 
 from van311.api import fetch_requests
-from van311.database import get_db_connection
-from van311.models import ServiceRequest
+from van311.database import get_db_connection, upsert_page_data
 from van311.utils import subtract_months_from_today
 
 
@@ -20,56 +16,29 @@ def create_db_table(con):
     )
 
 
-def fetch_seeding_requests(offset, month, year):
-    BASE_URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records"
+def _seed_month(con, month, year, pbar):
+    j = 0
+    while True:
+        offset = j * 100
+        data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
 
-    params = {
-        "order_by": "service_request_open_timestamp ASC",
-        "limit": 100,
-        "offset": offset,
-        "refine": f'service_request_open_timestamp:"{year}/{month}"',
-    }
+        upsert_page_data(con, data)
+        con.commit()
 
-    try:
-        r = requests.get(BASE_URL, params)
-        r.raise_for_status()
-        data = json.loads(r.text)
-        return data["results"]
+        sleep(1.8)
+        pbar.update(100)
+        if len(data) < 100:
+            break
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error during API fetch: {e}")
-        return []
+        j += 1
 
 
 def seed_database(con):
     pbar = tqdm(total=59000, desc="😋 Seeding Database")
 
     for i in reversed(range(0, 3)):
-        cur = con.cursor()
         month, year = subtract_months_from_today(i)
-
-        j = 0
-        while True:
-            offset = j * 100
-            data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
-
-            for request in data:
-                req = ServiceRequest.dict_to_service_request(request)
-
-                cur.execute(
-                    """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
-                    close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
-                    astuple(req),
-                )
-                con.commit()
-
-            sleep(1.8)
-            pbar.update(100)
-            if len(data) < 100:
-                break
-
-            j += 1
+        _seed_month(con, month, year, pbar)
 
     pbar.close()
     print("Task completed!")

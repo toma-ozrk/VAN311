@@ -11,7 +11,7 @@ def get_db_connection(db_name="../vancouver.db"):
     return con
 
 
-def upsert_service_requests(con, requests_data: list):
+def upsert_page_data(con, requests_data):
     for request in requests_data:
         req = ServiceRequest.dict_to_service_request(request)
 
@@ -21,7 +21,11 @@ def upsert_service_requests(con, requests_data: list):
                close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
             astuple(req),
         )
-        con.commit()
+
+
+def upsert_service_requests(con, requests_data: list):
+    upsert_page_data(con, requests_data)
+    con.commit()
     con.close()
 
 
