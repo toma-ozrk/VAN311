@@ -23,7 +23,6 @@ def _seed_month(con, month, year, pbar):
         data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
 
         upsert_page_data(con, data)
-        con.commit()
 
         sleep(1.8)
         pbar.update(100)
@@ -31,6 +30,8 @@ def _seed_month(con, month, year, pbar):
             break
 
         j += 1
+
+    con.commit()
 
 
 def seed_database(con):
