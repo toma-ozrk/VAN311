@@ -22,6 +22,7 @@ def upsert_service_requests(con, requests_data: list):
             astuple(req),
         )
         con.commit()
+    con.close()
 
 
 con = get_db_connection()

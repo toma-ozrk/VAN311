@@ -73,6 +73,7 @@ def seed_database(con):
 
     pbar.close()
     print("Task completed!")
+    con.close()
 
 
 con = get_db_connection()
