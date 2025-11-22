@@ -2,7 +2,9 @@ name: Python application
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+      - chore/add-initial-database-tests
   pull_request:
     branches: ["main"]
 
