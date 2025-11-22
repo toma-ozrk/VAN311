@@ -26,9 +26,23 @@ def test_get_db_connection():
         con.close()
 
 
-MOCK_SUCCESS_DATA = [{"request_id": "1"}, {"value": "coolvalue"}]
-EXPECTED_SQL = """INSERT INTO service_requests VALUES (?, ?)
-   ON CONFLICT(id) DO UPDATE SET value = EXCLUDED.value"""
+MOCK_SUCCESS_DATA = [
+    {
+        "department": "DBL - Property Use Inspections",
+        "service_request_type": "Noise on Private Property Case",
+        "status": "Close",
+        "closure_reason": "Assigned to inspector",
+        "service_request_open_timestamp": "2025-08-25T15:03:00+00:00",
+        "service_request_close_date": "2025-08-27",
+        "last_modified_timestamp": "2025-08-27T18:56:08+00:00",
+        "address": None,
+        "local_area": "Marpole",
+        "channel": "WEB",
+        "latitude": None,
+        "longitude": None,
+        "id": "7df03dffc88c54dd2f0748dc30148b77a35b64f430b27e4362a02e9027b5bcc7",
+    }
+]
 
 
 @patch("van311.database.get_db_connection")
@@ -40,15 +54,14 @@ def test_upsert_service_requests(mock_get_conn):
 
     upsert_service_requests(mock_conn, MOCK_SUCCESS_DATA)
 
-    mock_conn.assert_called_once()
-    mock_cursor.execute.assert_called_once()
+    mock_conn.execute.assert_called_once()
 
-    call_args, call_kwargs = mock_cursor.execute.call_args
+    call_args, call_kwargs = mock_conn.execute.call_args
     actual_sql = call_args[0]
     actual_params = call_args[1]
 
-    assert actual_sql.starts_with("""INSERT INTO service_requests""")
-    assert actual_params == ("1", "coolvalue")
+    assert actual_sql.startswith("""INSERT INTO service_requests""")
+    assert actual_params == tuple(MOCK_SUCCESS_DATA[0].values())
 
     mock_conn.commit.assert_called_once()
     mock_conn.close.assert_called_once()
