@@ -1,0 +1,22 @@
+[project]
+name = "van311"
+version = "0.1.0"
+description = "Backend for the van311 project"
+requires-python = ">=3.10"
+dependencies = [
+    "certifi",
+    "charset-normalizer",
+    "idna",
+    "iniconfig",
+    "packaging",
+    "pluggy",
+    "Pygments",
+    "pytest",
+    "python-dateutil",
+    "requests",
+    "six",
+    "tqdm",
+    "urllib3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

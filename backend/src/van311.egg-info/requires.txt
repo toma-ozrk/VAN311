@@ -1,0 +1,13 @@
+certifi
+charset-normalizer
+idna
+iniconfig
+packaging
+pluggy
+Pygments
+pytest
+python-dateutil
+requests
+six
+tqdm
+urllib3

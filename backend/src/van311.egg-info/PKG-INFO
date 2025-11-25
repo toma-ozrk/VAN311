@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: van311
+Version: 0.1.0
+Summary: Backend for the van311 project
+Requires-Python: >=3.10
+Requires-Dist: certifi
+Requires-Dist: charset-normalizer
+Requires-Dist: idna
+Requires-Dist: iniconfig
+Requires-Dist: packaging
+Requires-Dist: pluggy
+Requires-Dist: Pygments
+Requires-Dist: pytest
+Requires-Dist: python-dateutil
+Requires-Dist: requests
+Requires-Dist: six
+Requires-Dist: tqdm
+Requires-Dist: urllib3
