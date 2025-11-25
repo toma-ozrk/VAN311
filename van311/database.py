@@ -1,8 +1,36 @@
 import sqlite3
 from dataclasses import astuple
+from time import sleep
 
 from van311.api import fetch_requests
 from van311.models import ServiceRequest
+
+
+def create_db_table(con):
+    cur = con.cursor()
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,
+        status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
+        address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
+    )
+
+
+def _seed_month(con, month, year, pbar):
+    SLEEP_INTERVAL = 1.8
+
+    j = 0
+    while True:
+        offset = j * 100
+        data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
+
+        upsert_page_data(con, data)
+
+        sleep(SLEEP_INTERVAL)
+        pbar.update(100)
+        if len(data) < 100:
+            break
+
+        j += 1
 
 
 def get_db_connection(db_name="../vancouver.db"):
@@ -21,9 +49,4 @@ def upsert_page_data(con, requests_data):
                close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
             astuple(req),
         )
-
-
-def upsert_service_requests(con, requests_data: list):
-    upsert_page_data(con, requests_data)
     con.commit()
-    con.close()
