@@ -20,8 +20,11 @@ def update_service_requests():
                     f"[{datetime.now()}] Successfully updated database with {len(requests_data)} records."
                 )
 
-            print(f"Update finished. Sleeping for {UPDATE_INTERVAL_SECONDS} seconds.")
-            sleep(UPDATE_INTERVAL_SECONDS)
+                con.commit()
+                print(
+                    f"Update finished. Sleeping for {UPDATE_INTERVAL_SECONDS} seconds."
+                )
+                sleep(UPDATE_INTERVAL_SECONDS)
 
         except Exception as e:
             print(f"CRITICAL ERROR during update: {e}. Retrying in 5 minutes.")
