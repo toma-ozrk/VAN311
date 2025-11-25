@@ -49,4 +49,3 @@ def upsert_page_data(con, requests_data):
                close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
             astuple(req),
         )
-    con.commit()
