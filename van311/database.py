@@ -27,14 +27,3 @@ def upsert_service_requests(con, requests_data: list):
     upsert_page_data(con, requests_data)
     con.commit()
     con.close()
-
-
-con = get_db_connection()
-data = fetch_requests()
-cur = con.cursor()
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,
-    status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
-    address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
-)
-upsert_service_requests(con, data)

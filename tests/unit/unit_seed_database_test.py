@@ -1,6 +1,6 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, call, patch
 
-from van311.seed_database import _seed_month, create_db_table
+from van311.seed_database import _seed_month, create_db_table, seed_database
 
 
 def test_create_db_table():
@@ -48,3 +48,29 @@ def test_seed_month_no_results(mock_page_data, mock_requests):
     mock_con.commit.assert_called_once()
     mock_requests.assert_called_once()
     mock_page_data.assert_called_once()
+
+
+@patch("van311.seed_database.tqdm")
+@patch("van311.seed_database.subtract_months_from_today")
+@patch("van311.seed_database._seed_month")
+def test_seed_database(mock_seed_month, mock_month_operation, mock_pbar):
+    mock_con = Mock()
+    mock_month_operation.side_effect = [(11, 2025), (10, 2025), (9, 2025)]
+
+    mock_pbar_instance = Mock()
+    mock_pbar.return_value = mock_pbar_instance
+
+    seed_database(mock_con)
+    mock_pbar.assert_called_once()
+    assert mock_seed_month.call_count == 3
+    assert mock_month_operation.call_count == 3
+
+    expected_calls = [
+        call(mock_con, 11, 2025, mock_pbar_instance),
+        call(mock_con, 10, 2025, mock_pbar_instance),
+        call(mock_con, 9, 2025, mock_pbar_instance),
+    ]
+
+    mock_seed_month.assert_has_calls(expected_calls)
+    mock_con.close.assert_called_once()
+    mock_pbar_instance.close.assert_called_once()

@@ -3,7 +3,7 @@ from time import sleep
 from tqdm import tqdm
 
 from van311.api import fetch_requests
-from van311.database import get_db_connection, upsert_page_data
+from van311.database import upsert_page_data
 from van311.utils import subtract_months_from_today
 
 
@@ -44,8 +44,3 @@ def seed_database(con):
     pbar.close()
     print("Task completed!")
     con.close()
-
-
-con = get_db_connection()
-create_db_table(con)
-seed_database(con)
