@@ -1,7 +1,7 @@
 from unittest.mock import call, patch
 
 from scripts.seed_db import seed_database
-from scripts.update_data import _update_service_requests_once
+from scripts.update_data import update_service_requests
 
 
 @patch("scripts.seed_db.tqdm")
@@ -161,7 +161,7 @@ def test_update_service_requests(
     mock_requests.return_value = SAMPLE_REQUESTS
     mock_db_con.return_value = db_con
 
-    _update_service_requests_once()
+    update_service_requests()
 
     mock_db_con.assert_called_once()
     mock_requests.assert_called_once()

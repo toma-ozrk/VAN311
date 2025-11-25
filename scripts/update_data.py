@@ -1,5 +1,4 @@
 from datetime import datetime
-from time import sleep
 
 from van311.api import fetch_requests
 from van311.database import get_db_connection, upsert_page_data
@@ -7,31 +6,21 @@ from van311.database import get_db_connection, upsert_page_data
 UPDATE_INTERVAL_SECONDS = 1800
 
 
-def _update_service_requests_once():
-    with get_db_connection() as con:
-        requests_data = fetch_requests()
-        upsert_page_data(con, requests_data)
-
-        print(
-            f"[{datetime.now()}] Successfully updated database with {len(requests_data)} records."
-        )
-
-        con.commit()
-    print(f"Update finished. Sleeping for {UPDATE_INTERVAL_SECONDS} seconds.")
-
-
 def update_service_requests():
-    while True:
+    try:
         print("--- Starting scheduled update run ---")
+        with get_db_connection() as con:
+            requests_data = fetch_requests()
+            upsert_page_data(con, requests_data)
 
-        try:
-            _update_service_requests_once()
-            sleep(UPDATE_INTERVAL_SECONDS)
+            print(
+                f"[{datetime.now()}] Successfully updated database with {len(requests_data)} records."
+            )
 
-        except Exception as e:
-            print(f"CRITICAL ERROR during update: {e}. Retrying in 5 minutes.")
-            sleep(300)
-            continue
+            con.commit()
+        print(f"Update finished. Sleeping for {UPDATE_INTERVAL_SECONDS} seconds.")
+    except Exception as e:
+        print(f"CRITICAL ERROR during update: {e}.")
 
 
 if __name__ == "__main__":
