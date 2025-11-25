@@ -1,7 +1,7 @@
 from unittest.mock import call, patch
 
-from scripts.seed_db import seed_database
-from scripts.update_data import update_service_requests
+from scripts.data_gathering.seed_db import seed_database
+from scripts.data_gathering.update_data import update_service_requests
 
 
 @patch("scripts.seed_db.tqdm")
