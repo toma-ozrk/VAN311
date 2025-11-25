@@ -1,5 +1,6 @@
 import sqlite3
 from dataclasses import astuple
+from pathlib import Path
 from time import sleep
 
 from van311.api import fetch_requests
@@ -33,7 +34,11 @@ def _seed_month(con, month, year, pbar):
         j += 1
 
 
-def get_db_connection(db_name="../vancouver.db"):
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # up from van311/
+DB_PATH = BASE_DIR / "data" / "vancouver.db"
+
+
+def get_db_connection(db_name=DB_PATH):
     con = sqlite3.connect(db_name)
     con.row_factory = sqlite3.Row
     return con
