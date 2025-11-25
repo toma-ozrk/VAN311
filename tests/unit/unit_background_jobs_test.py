@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import call, patch
 
 from scripts.seed_db import seed_database
 from scripts.update_data import update_service_requests
