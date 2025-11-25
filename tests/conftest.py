@@ -4,7 +4,7 @@ import pytest
 
 
 @pytest.fixture
-def seed_database_mocks():
+def database_mocks():
     mock_db_con = MagicMock(name="db_connection")
     mock_pbar_yielded = MagicMock(name="pbar_instance")
     mock_tqdm_context_manager = MagicMock(name="tqdm_context_manager")

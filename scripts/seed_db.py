@@ -16,7 +16,7 @@ def seed_database():
                 _seed_month(con, month, year, pbar)
 
             con.commit()
-            print("--- Finished database seeding ---")
+        print("--- Finished database seeding ---")
 
     except Exception as e:
         print(f"CRITICAL ERROR during seeding: {e}")
