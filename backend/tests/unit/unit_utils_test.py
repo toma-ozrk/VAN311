@@ -1,10 +1,15 @@
 from datetime import date, datetime
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
-from van311.utils.dates import subtract_months_from_today, calculate_day_difference, calculate_timestamp_difference, timestamp_to_date_obj
-
+from van311.utils.dates import (
+    calculate_day_difference,
+    calculate_timestamp_difference,
+    subtract_months_from_today,
+    timestamp_to_date_obj,
+)
 
 # ------ TEST SUBTRACT_MONTHS_FROM_TODAY ------
+
 
 @patch("van311.utils.dates.date")
 def test_subtract_months_from_today_rollover(mock_date):
@@ -28,12 +33,14 @@ def test_subtract_months_from_today_large_n(mock_date):
 
 # ------ TEST CALCULATE_DAY_DIFFERENCE ------
 
+
 def test_calculate_day_difference_basic():
     OPEN_TIMESTAMP = "2025-08-25T15:03:00+00:00"
     CLOSE_DATE = "2025-08-27"
 
     days_elapsed = calculate_day_difference(OPEN_TIMESTAMP, CLOSE_DATE)
     assert days_elapsed == 2
+
 
 def test_calculate_day_difference_same_day():
     OPEN_TIMESTAMP = "2025-08-25T15:03:00+00:00"
@@ -42,16 +49,17 @@ def test_calculate_day_difference_same_day():
     days_elapsed = calculate_day_difference(OPEN_TIMESTAMP, CLOSE_DATE)
     assert days_elapsed == 0
 
-def test_calculate_day_difference_previous_day():
 
+def test_calculate_day_difference_previous_day():
     OPEN_TIMESTAMP = "2025-08-25T15:03:00+00:00"
     CLOSE_DATE = "2025-08-24"
 
     days_elapsed = calculate_day_difference(OPEN_TIMESTAMP, CLOSE_DATE)
-    assert days_elapsed == 0 # should return 0 due to api logging inconsistencies
+    assert days_elapsed == 0  # should return 0 due to api logging inconsistencies
 
 
 # ------ TEST TIMESTAMP_TO_DATE_OBJ ------
+
 
 def test_timestamp_to_test_obj_basic():
     TEST_TIMESTAMP = "2025-08-25T15:03:00+00:00"
@@ -62,6 +70,7 @@ def test_timestamp_to_test_obj_basic():
 
 # ------ TEST CALCULATE_TIMESTAMP_DIFFERENCE ------
 
+
 def test_calculate_timestamp_difference_basic():
     OPEN_TIMESTAMP = "2025-09-01T00:42:00+00:00"
     MOD_DATE = "2025-09-05T16:35:08+00:00"
@@ -70,6 +79,7 @@ def test_calculate_timestamp_difference_basic():
 
     assert days_elapsed == 4.66
 
+
 def test_calculate_timestamp_difference_same_timestamp():
     OPEN_TIMESTAMP = "2025-09-01T00:42:00+00:00"
     MOD_DATE = "2025-09-01T00:42:00+00:00"
@@ -77,6 +87,7 @@ def test_calculate_timestamp_difference_same_timestamp():
     days_elapsed = calculate_timestamp_difference(OPEN_TIMESTAMP, MOD_DATE)
 
     assert days_elapsed == 0
+
 
 def test_calculate_timestamp_difference_negative():
     OPEN_TIMESTAMP = "2025-09-05T16:35:08+00:00"

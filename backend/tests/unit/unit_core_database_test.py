@@ -55,7 +55,6 @@ MOCK_SUCCESS_DATA = [
 
 @patch("van311.db.core.ServiceRequest")
 def test_upsert_page_data(mock_request):
-
     input_data = [
         {"id": "1", "value": "1"},
         {"id": "2", "value": "2"},

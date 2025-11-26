@@ -2,6 +2,7 @@ from unittest.mock import call, patch
 
 from van311.db.seeding import seed_database
 
+
 @patch("van311.db.seeding.tqdm")
 @patch("van311.db.seeding.get_db_connection")
 def test_seed_database_success(mock_get_con, mock_tqdm, database_mocks):
@@ -13,12 +14,8 @@ def test_seed_database_success(mock_get_con, mock_tqdm, database_mocks):
     mock_tqdm.return_value = tqdm_manager
 
     with (
-        patch(
-            "van311.db.seeding.create_db_table"
-        ) as mock_create_table,
-        patch(
-            "van311.db.seeding.subtract_months_from_today"
-        ) as mock_month_operation,
+        patch("van311.db.seeding.create_db_table") as mock_create_table,
+        patch("van311.db.seeding.subtract_months_from_today") as mock_month_operation,
         patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_month_operation.side_effect = [(7, 2025), (8, 2025), (9, 2025)]
@@ -56,12 +53,8 @@ def test_seed_database_db_connection_failiure(
     mock_tqdm.return_value = tqdm_manager
 
     with (
-        patch(
-            "van311.db.seeding.create_db_table"
-        ) as mock_create_table,
-        patch(
-            "van311.db.seeding.subtract_months_from_today"
-        ) as mock_month_operation,
+        patch("van311.db.seeding.create_db_table") as mock_create_table,
+        patch("van311.db.seeding.subtract_months_from_today") as mock_month_operation,
         patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_month_operation.side_effect = [(7, 2025), (8, 2025), (9, 2025)]
@@ -93,12 +86,8 @@ def test_seed_database_db_creation_failiure(
     mock_tqdm.return_value = tqdm_manager
 
     with (
-        patch(
-            "van311.db.seeding.create_db_table"
-        ) as mock_create_table,
-        patch(
-            "van311.db.seeding.subtract_months_from_today"
-        ) as mock_month_operation,
+        patch("van311.db.seeding.create_db_table") as mock_create_table,
+        patch("van311.db.seeding.subtract_months_from_today") as mock_month_operation,
         patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_create_table.side_effect = Exception("Database creation failiure")
@@ -131,12 +120,8 @@ def test_seed_database_failiure_mid_seed(
     mock_tqdm.return_value = tqdm_manager
 
     with (
-        patch(
-            "van311.db.seeding.create_db_table"
-        ) as mock_create_table,
-        patch(
-            "van311.db.seeding.subtract_months_from_today"
-        ) as mock_month_operation,
+        patch("van311.db.seeding.create_db_table") as mock_create_table,
+        patch("van311.db.seeding.subtract_months_from_today") as mock_month_operation,
         patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_seed_month.side_effect = [None, Exception("Seeding failiure mid cycle")]
