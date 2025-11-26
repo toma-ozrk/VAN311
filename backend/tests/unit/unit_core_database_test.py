@@ -3,13 +3,13 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from van311.database import (
+from van311.db.core import (
     _seed_month,
     create_db_table,
     get_db_connection,
     upsert_page_data,
 )
-from van311.models import ServiceRequest
+from van311.models.service_request import ServiceRequest
 
 
 def test_get_db_connection():
@@ -51,7 +51,7 @@ MOCK_SUCCESS_DATA = [
 ]
 
 
-@patch("van311.database.ServiceRequest")
+@patch("van311.db.core.ServiceRequest")
 def test_upsert_page_data(mock_request):
     input_data = [
         {"id": "1", "value": "1"},
@@ -122,8 +122,8 @@ requests_100 = [{f"{x}": f"{x}"} for x in range(0, 100)]
 requests_0 = [{}]
 
 
-@patch("van311.database.fetch_requests")
-@patch("van311.database.upsert_page_data")
+@patch("van311.db.core.fetch_requests")
+@patch("van311.db.core.upsert_page_data")
 def test_seed_month(mock_page_data, mock_requests):
     mock_con = Mock()
     mock_page_data.return_value = None
@@ -136,8 +136,8 @@ def test_seed_month(mock_page_data, mock_requests):
     assert mock_page_data.call_count == 4
 
 
-@patch("van311.database.fetch_requests")
-@patch("van311.database.upsert_page_data")
+@patch("van311.db.core.fetch_requests")
+@patch("van311.db.core.upsert_page_data")
 def test_seed_month_no_results(mock_page_data, mock_requests):
     mock_con = Mock()
     mock_page_data.return_value = None

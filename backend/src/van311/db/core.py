@@ -3,8 +3,8 @@ from dataclasses import astuple
 from pathlib import Path
 from time import sleep
 
-from van311.api import fetch_requests
-from van311.models import ServiceRequest
+from van311.ingestion.fetch_requests import fetch_requests
+from van311.models.service_request import ServiceRequest
 
 
 def create_db_table(con):

@@ -1,7 +1,7 @@
 import json
 from unittest.mock import Mock, patch
 
-from van311.api import fetch_requests
+from van311.ingestion.fetch_requests import fetch_requests
 
 MOCK_SUCCESS_DATA = {
     "results": [
@@ -13,7 +13,7 @@ MOCK_SUCCESS_DATA = {
 }
 
 
-@patch("src.van311.api.requests.get")
+@patch("van311.ingestion.fetch_requests.requests.get")
 def test_fetch_requests(mock_get):
     mock_response = Mock()
     mock_response.status_code = 200
@@ -36,7 +36,7 @@ def test_fetch_requests(mock_get):
     assert len(results) == 4
 
 
-@patch("src.van311.api.requests.get")
+@patch("van311.ingestion.fetch_requests.requests.get")
 def test_fetch_requests_seeding(mock_get):
     mock_response = Mock()
     mock_response.status_code = 200

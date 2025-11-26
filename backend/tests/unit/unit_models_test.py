@@ -1,9 +1,9 @@
 from unittest.mock import patch
 
-from van311.models import ServiceRequest
+from van311.models.service_request import ServiceRequest
 
 
-@patch("van311.models.ServiceRequest.create_hash")
+@patch("van311.models.service_request.ServiceRequest.create_hash")
 def test_service_request_sanitation(mock_hash):
     input_data = {
         "department": "DBL - Property Use Inspections",

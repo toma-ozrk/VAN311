@@ -1,7 +1,7 @@
 from tqdm import tqdm
 
-from van311.database import _seed_month, create_db_table, get_db_connection
-from van311.utils import subtract_months_from_today
+from van311.db.core import _seed_month, create_db_table, get_db_connection
+from van311.utils.dates import subtract_months_from_today
 
 
 def seed_database():
@@ -20,6 +20,9 @@ def seed_database():
 
     except Exception as e:
         print(f"CRITICAL ERROR during seeding: {e}")
+
+def seed_metrics():
+    pass
 
 
 if __name__ == "__main__":

@@ -1,10 +1,10 @@
 from datetime import date
 from unittest.mock import patch
 
-from van311.utils import subtract_months_from_today
+from van311.utils.dates import subtract_months_from_today
 
 
-@patch("van311.utils.date")
+@patch("van311.utils.dates.date")
 def test_subtract_months_from_today_rollover(mock_date):
     mock_date.today.return_value = date(2025, 1, 15)
 
@@ -14,7 +14,7 @@ def test_subtract_months_from_today_rollover(mock_date):
     assert year == 2024, "Should roll back to 2024"
 
 
-@patch("van311.utils.date")
+@patch("van311.utils.dates.date")
 def test_subtract_months_from_today_large_n(mock_date):
     mock_date.today.return_value = date(2025, 5, 15)
 
