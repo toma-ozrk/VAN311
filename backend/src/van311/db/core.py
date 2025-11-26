@@ -32,7 +32,7 @@ def _seed_month(con, month, year, pbar):
             break
 
         j += 1
-        # con.commit()
+        # con.commit() # for partial seeding testing only
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
