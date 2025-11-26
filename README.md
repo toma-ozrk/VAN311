@@ -1,7 +1,74 @@
-# 🇨🇦 Vancouver Service Request Tracker
+# 🇨🇦 Vancouver 3-1-1 Service Analytics Dashboard
 
-3-1-1 service request tracking and data analysis for the city of Vancouver
+**Project Status:** Functional API and Data Pipeline Complete
 
-## Features
+This project is a back-end web service designed to ingest, analyze, and serve public civic data from the City of Vancouver's 3-1-1 Service Request portal. It functions as a resilient ETL (Extract, Transform, Load) pipeline, transforming raw government data into performance metrics for easy visualization and comparison.
 
-Lots to be done
+## Architecture
+
+This project was built to showcase data engineering practices and the ability to manage resource allocation and ensure data integrity in a web service environment.
+
+### 1\. Data Pipeline (ETL)
+
+The core logic is implemented in dedicated, isolated Python scripts to prevent the web service from being blocked by heavy I/O tasks.
+
+- **Ingestion Worker (scripts/updates.py):** Will run continuously in the background to poll the external 3-1-1 API every 50 minutes.
+
+- **Materialized Views:** Data is optimized for reporting by maintaining two tables:
+  1.  service_requests: Stores the raw 56,000+ records and calculated raw metrics (e.g., time_to_resolve_days).
+  2.  metric_aggregates: Stores pre-calculated, aggregated metrics (Averages, Counts, Backlog totals) across various dimensions for instant retrieval by the API.
+
+- **Resource Safety:** All I/O heavy scripts are structured with try/finally blocks to guarantee the database connection is closed and unlocked after every run, ensuring resource integrity.
+
+### 2\. Data Integrity
+
+The system implements techniques to handle known deficiencies in the public API:
+
+- **Guaranteed Unique Key:** Since the source API lacks a unique ID, a **Deterministic Hash Key**(hashlib.sha256) is synthesized from critical fields (department, type, timestamp). This ensures that the system can reliably **Upsert** (Update or Insert) records, preventing duplicates and tracking status changes (Open → Closed) accurately.
+
+- **Defensive Mapping:** The ServiceRequest.dict_to_service_request method ensures all fields are defensively mapped using .get(key, default="") to prevent script crashes when the external API omits or reorders fields.
+
+- **Statistical Accuracy:** The system correctly distinguishes between the **Total Workload** (Volume including NULL locations) and **Analyzable Performance** (Metrics calculated only on confirmed location data), ensuring all reported averages are statistically sound.
+
+## 📈 Implemented Metrics
+
+| Metric        | Calculation                                  | Aggregation Levels                                                         |
+| ------------- | -------------------------------------------- | -------------------------------------------------------------------------- |
+| avg_ttr       | Average time to close a request              | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local                |
+| volume        | Count of all requests                        | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local, Null location |
+| open_requests | Count of all requests where status is 'Open' | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local                |
+
+## 🛠️ Technology Stack
+
+- **Backend Framework:** Python (FastAPI)
+
+- **Data Analysis:** Python (requests, datetime, hashlib)
+
+- **Database:** SQLite (SQLAlchemy ORM for future scaling planned)
+
+- **Job Scheduling:** RQ / Redis.
+
+## Getting Started Locally
+
+### Prerequisites
+
+1.  Clone this repository.
+2.  Install dependencies:
+
+```python
+pip install -e .
+```
+
+### Running the Project
+
+**1\. Database Seeding (Run Once)**
+
+This script populates the database with 3 months of historical data (approx. 14 minutes), and calculates metrics:
+
+```python
+python backend/scripts/setup.py
+```
+
+**2\. Running the Background Worker (For Continuous Updates)**
+
+- WIP
