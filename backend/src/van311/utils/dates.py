@@ -28,7 +28,7 @@ def calculate_timestamp_difference(open_t: str, mod_t: str):
     time_difference = (mod_time - open_time)
     days_elapsed: float = time_difference.days + time_difference.seconds / 86400
 
-    return days_elapsed.__format__(".2f")
+    return float(days_elapsed.__format__(".2f"))
 
 if __name__ == "__main__":
     pass
