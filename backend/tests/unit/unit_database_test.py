@@ -13,7 +13,7 @@ from van311.models import ServiceRequest
 
 
 def test_get_db_connection():
-    con = get_db_connection(":memory:")
+    con = get_db_connection(db_path_string=":memory:")
     assert isinstance(con, sqlite3.Connection)
 
     try:

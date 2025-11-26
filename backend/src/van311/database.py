@@ -34,12 +34,12 @@ def _seed_month(con, month, year, pbar):
         j += 1
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  # up from van311/
-DB_PATH = BASE_DIR / "data" / "vancouver.db"
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DB_PATH = PROJECT_ROOT / "data" / "vancouver.db"
 
 
-def get_db_connection(db_name=DB_PATH):
-    con = sqlite3.connect(db_name)
+def get_db_connection(db_path=DB_PATH, db_path_string=""):
+    con = sqlite3.connect(db_path if not db_path_string else db_path_string)
     con.row_factory = sqlite3.Row
     return con
 

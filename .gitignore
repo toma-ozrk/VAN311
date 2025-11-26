@@ -7,3 +7,5 @@ __pycache__
 .DS_Store
 .pytest_cache
 requirements.txt
+.zed
+*.egg-info
