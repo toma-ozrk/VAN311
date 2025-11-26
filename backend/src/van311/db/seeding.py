@@ -21,9 +21,6 @@ def seed_database():
     except Exception as e:
         print(f"CRITICAL ERROR during seeding: {e}")
 
-def seed_metrics():
-    pass
-
 
 if __name__ == "__main__":
     seed_database()
