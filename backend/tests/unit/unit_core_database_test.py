@@ -46,6 +46,8 @@ MOCK_SUCCESS_DATA = [
         "channel": "WEB",
         "latitude": None,
         "longitude": None,
+        "time_to_resolve": 2,
+        "time_to_update": 2.2,
         "id": "7df03dffc88c54dd2f0748dc30148b77a35b64f430b27e4362a02e9027b5bcc7",
     }
 ]
@@ -53,6 +55,7 @@ MOCK_SUCCESS_DATA = [
 
 @patch("van311.db.core.ServiceRequest")
 def test_upsert_page_data(mock_request):
+
     input_data = [
         {"id": "1", "value": "1"},
         {"id": "2", "value": "2"},
@@ -82,7 +85,9 @@ def test_upsert_page_data(mock_request):
         "10",
         "11",
         "12",
-        "13",
+        13,
+        14,
+        "15",
     )
 
     mock_con = Mock()
