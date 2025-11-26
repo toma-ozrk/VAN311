@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from tqdm import tqdm
+
 from van311.db.core import get_db_connection
 
 FLAG_CITYWIDE = "CITYWIDE"
@@ -266,51 +268,69 @@ def get_null_neighbourhood_volume(con):
 # ------ CALCULATE METRICS ------
 
 
-def calculate_null_metrics(con):
+def calculate_null_metrics(con, pbar):
     get_null_neighbourhood_volume(con)
+    pbar.update(1)
 
 
-def calculate_city_wide_metrics(con):
+def calculate_city_wide_metrics(con, pbar):
     get_citywide_average_resolution_time(con)
+    pbar.update(1)
     get_citywide_average_update_time(con)
+    pbar.update(1)
     get_citywide_volume(con)
+    pbar.update(1)
     get_citywide_open_requests(con)
+    pbar.update(1)
 
 
-def calculate_issue_metrics(con):
+def calculate_issue_metrics(con, pbar):
     get_issue_average_resolution_time(con)
+    pbar.update(1)
     get_issue_average_update_time(con)
+    pbar.update(1)
     get_issue_volume(con)
+    pbar.update(1)
     get_issue_open_requests(con)
+    pbar.update(1)
 
 
-def calculate_neighbourhood_metrics(con):
+def calculate_neighbourhood_metrics(con, pbar):
     get_neighbourhood_average_resolution_time(con)
+    pbar.update(1)
     get_neighbourhood_average_update_time(con)
+    pbar.update(1)
     get_neighbourhood_volume(con)
+    pbar.update(1)
     get_neighbourhood_open_requests(con)
+    pbar.update(1)
 
 
-def calculate_neighbourhood_issue_metrics(con):
+def calculate_neighbourhood_issue_metrics(con, pbar):
     get_ni_average_resolution_time(con)
+    pbar.update(1)
     get_ni_average_update_time(con)
+    pbar.update(1)
     get_ni_volume(con)
+    pbar.update(1)
     get_ni_open_requests(con)
+    pbar.update(1)
 
 
 def calculate_metrics():
     try:
-        with get_db_connection() as con:
-            print("--- Starting scheduled metrics calculations ---")
-
+        with (
+            get_db_connection() as con,
+            tqdm(total=17, desc="😋 Scheduled metrics calculations") as pbar,
+        ):
             drop_db_metrics_table(con)
             create_db_metrics_table(con)
 
-            calculate_null_metrics(con)
-            calculate_city_wide_metrics(con)
-            calculate_neighbourhood_metrics(con)
-            calculate_issue_metrics(con)
-            calculate_neighbourhood_issue_metrics(con)
+            calculate_null_metrics(con, pbar)
+            calculate_city_wide_metrics(con, pbar)
+            calculate_neighbourhood_metrics(con, pbar)
+            calculate_issue_metrics(con, pbar)
+            calculate_neighbourhood_issue_metrics(con, pbar)
 
             con.commit()
             print("--- Finished calculating metrics ---")
