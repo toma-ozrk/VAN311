@@ -12,7 +12,7 @@ def create_db_table(con):
     cur.execute(
         """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,
         status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
-        address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, id TEXT PRIMARY KEY)"""
+        address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, time_to_resolve INT, time_to_update REAL, id TEXT PRIMARY KEY)"""
     )
 
 
@@ -24,7 +24,7 @@ def _seed_month(con, month, year, pbar):
         offset = j * 100
         data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
 
-        upsert_page_data(con, data)
+        upsert_page_data(con, data, seeding=True)
 
         sleep(SLEEP_INTERVAL)
         pbar.update(100)
@@ -32,9 +32,10 @@ def _seed_month(con, month, year, pbar):
             break
 
         j += 1
+        # con.commit()
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 DB_PATH = PROJECT_ROOT / "data" / "vancouver.db"
 
 
@@ -44,12 +45,14 @@ def get_db_connection(db_path=DB_PATH, db_path_string=""):
     return con
 
 
-def upsert_page_data(con, requests_data):
+def upsert_page_data(con, requests_data, seeding: bool = False):
     for request in requests_data:
         req = ServiceRequest.dict_to_service_request(request)
+        if seeding:
+            req.time_to_update = None
 
         con.execute(
-            """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """INSERT INTO service_requests VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                ON CONFLICT(id) DO UPDATE SET status = EXCLUDED.status, closure_reason = EXCLUDED.closure_reason,
                close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
             astuple(req),
