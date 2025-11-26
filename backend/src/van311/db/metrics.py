@@ -2,6 +2,11 @@ from datetime import datetime
 
 from van311.db.core import get_db_connection
 
+FLAG_CITYWIDE = "CITYWIDE"
+FLAG_UNKNOWN_AREA = "UNKNOWN_AREA"
+FLAG_UNKNOWN_ISSUE = "UNKNOWN_ISSUE"
+
+
 # ------ HELPER FUNCTIONS ------
 
 
@@ -37,7 +42,7 @@ def insert_row(con, row, metric_name: str, metric_key: str):
 
 def insert_row_issue(con, row, metric_name: str, metric_key: str):
     input = (
-        "CITYWIDE",
+        FLAG_CITYWIDE,
         row["issue_type"],
         metric_name,
         row[metric_key],
@@ -49,7 +54,7 @@ def insert_row_issue(con, row, metric_name: str, metric_key: str):
 def insert_row_neighbourhood(con, row, metric_name: str, metric_key: str):
     input = (
         row["local_area"],
-        "CITYWIDE",
+        FLAG_CITYWIDE,
         metric_name,
         row[metric_key],
         str(datetime.now()),
@@ -58,12 +63,18 @@ def insert_row_neighbourhood(con, row, metric_name: str, metric_key: str):
 
 
 def insert_row_citywide(con, metric_name: str, value):
-    input = ("CITYWIDE", "CITYWIDE", metric_name, value, str(datetime.now()))
+    input = (FLAG_CITYWIDE, FLAG_CITYWIDE, metric_name, value, str(datetime.now()))
     sql_execute(con, input)
 
 
 def insert_row_null(con, metric_name: str, value):
-    input = ("UNKNOWN_AREA", "UNKNOWN_ISSUE", metric_name, value, str(datetime.now()))
+    input = (
+        FLAG_UNKNOWN_AREA,
+        FLAG_UNKNOWN_ISSUE,
+        metric_name,
+        value,
+        str(datetime.now()),
+    )
     sql_execute(con, input)
 
 
