@@ -42,7 +42,6 @@ class ServiceRequest:
         mod_time: str = request.get("last_modified_timestamp", "")
 
         return cls(
-
             department=request.get("department", ""),
             issue_type=request.get("service_request_type", ""),
             status=request.get("status", ""),
@@ -55,7 +54,11 @@ class ServiceRequest:
             channel=request.get("channel", ""),
             lat=request.get("latitude", ""),
             lon=request.get("longitude", ""),
-            time_to_resolve=calculate_day_difference(open_time, close_time) if close_time else None,
-            time_to_update=calculate_timestamp_difference(open_time, mod_time) if (open_time != mod_time) else None,
+            time_to_resolve=calculate_day_difference(open_time, close_time)
+            if close_time
+            else None,
+            time_to_update=calculate_timestamp_difference(open_time, mod_time)
+            if (open_time != mod_time)
+            else None,
             id=unique_id,
         )
