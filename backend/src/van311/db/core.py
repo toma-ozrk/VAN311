@@ -12,7 +12,8 @@ def create_db_table(con):
     cur.execute(
         """CREATE TABLE IF NOT EXISTS service_requests(department TEXT, issue_type TEXT,
         status TEXT, closure_reason TEXT, open_ts TEXT, close_ts TEXT, modified_ts TEXT,
-        address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, time_to_resolve INT, time_to_update REAL, id TEXT PRIMARY KEY)"""
+        address TEXT, local_area TEXT, channel TEXT, lat TEXT, long TEXT, time_to_resolve INT,
+        time_to_update REAL, id TEXT PRIMARY KEY)"""
     )
 
 

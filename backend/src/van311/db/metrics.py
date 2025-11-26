@@ -92,6 +92,17 @@ def get_ni_average_resolution_time(con):
         insert_row(con, row, "ni_avg_ttr", "avg_ttr")
 
 
+def get_ni_average_update_time(con):
+    rows = con.execute(
+        """SELECT local_area, issue_type, AVG(time_to_update) as avg_ttu FROM service_requests
+        WHERE time_to_update IS NOT NULL AND local_area IS NOT NULL
+        AND issue_type IS NOT NULL GROUP BY local_area, issue_type"""
+    )
+
+    for row in rows:
+        insert_row(con, row, "ni_avg_ttu", "avg_ttu")
+
+
 def get_ni_volume(con):
     rows = con.execute(
         """SELECT local_area, issue_type, COUNT(*) as count FROM service_requests
@@ -127,6 +138,16 @@ def get_issue_average_resolution_time(con):
         insert_row_issue(con, row, "issue_avg_ttr", "avg_ttr")
 
 
+def get_issue_average_update_time(con):
+    rows = con.execute(
+        """SELECT issue_type, AVG(time_to_update) as avg_ttu FROM service_requests
+        WHERE time_to_update IS NOT NULL AND issue_type IS NOT NULL GROUP BY issue_type"""
+    )
+
+    for row in rows:
+        insert_row_issue(con, row, "issue_avg_ttu", "avg_ttu")
+
+
 def get_issue_volume(con):
     rows = con.execute(
         """SELECT issue_type, COUNT(*) as count FROM service_requests
@@ -160,6 +181,16 @@ def get_neighbourhood_average_resolution_time(con):
         insert_row_neighbourhood(con, row, "neighbourhood_avg_ttr", "avg_ttr")
 
 
+def get_neighbourhood_average_update_time(con):
+    rows = con.execute(
+        """SELECT local_area, AVG(time_to_update) as avg_ttu FROM service_requests
+        WHERE time_to_update IS NOT NULL AND local_area IS NOT NULL GROUP BY local_area"""
+    )
+
+    for row in rows:
+        insert_row_neighbourhood(con, row, "neighbourhood_avg_ttu", "avg_ttu")
+
+
 def get_neighbourhood_volume(con):
     rows = con.execute(
         """SELECT local_area, COUNT(*) as count FROM service_requests
@@ -191,6 +222,16 @@ def get_citywide_average_resolution_time(con):
 
     average = query.fetchone()["avg_ttr"]
     insert_row_citywide(con, "citywide_avg_ttr", average)
+
+
+def get_citywide_average_update_time(con):
+    query = con.execute(
+        """SELECT AVG(time_to_update) as avg_ttu FROM service_requests
+        WHERE time_to_update IS NOT NULL"""
+    )
+
+    average = query.fetchone()["avg_ttu"]
+    insert_row_citywide(con, "citywide_avg_ttu", average)
 
 
 def get_citywide_volume(con):
@@ -231,24 +272,28 @@ def calculate_null_metrics(con):
 
 def calculate_city_wide_metrics(con):
     get_citywide_average_resolution_time(con)
+    get_citywide_average_update_time(con)
     get_citywide_volume(con)
     get_citywide_open_requests(con)
 
 
 def calculate_issue_metrics(con):
     get_issue_average_resolution_time(con)
+    get_issue_average_update_time(con)
     get_issue_volume(con)
     get_issue_open_requests(con)
 
 
 def calculate_neighbourhood_metrics(con):
     get_neighbourhood_average_resolution_time(con)
+    get_neighbourhood_average_update_time(con)
     get_neighbourhood_volume(con)
     get_neighbourhood_open_requests(con)
 
 
 def calculate_neighbourhood_issue_metrics(con):
     get_ni_average_resolution_time(con)
+    get_ni_average_update_time(con)
     get_ni_volume(con)
     get_ni_open_requests(con)
 
