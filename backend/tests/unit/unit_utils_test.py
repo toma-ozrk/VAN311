@@ -43,11 +43,12 @@ def test_calculate_day_difference_same_day():
     assert days_elapsed == 0
 
 def test_calculate_day_difference_previous_day():
+
     OPEN_TIMESTAMP = "2025-08-25T15:03:00+00:00"
     CLOSE_DATE = "2025-08-24"
 
     days_elapsed = calculate_day_difference(OPEN_TIMESTAMP, CLOSE_DATE)
-    assert days_elapsed == -1
+    assert days_elapsed == 0 # should return 0 due to api logging inconsistencies
 
 
 # ------ TEST TIMESTAMP_TO_DATE_OBJ ------
