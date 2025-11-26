@@ -10,13 +10,14 @@ dependencies = [
     "iniconfig",
     "packaging",
     "pluggy",
-    "Pygments",
+    "pygments",
     "pytest",
     "python-dateutil",
     "requests",
     "six",
     "tqdm",
-    "urllib3"]
+    "urllib3",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
