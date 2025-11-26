@@ -1,15 +1,11 @@
 from unittest.mock import call, patch
 
-from van311.db.seed_db import seed_database
-from van311.db.update_data import update_service_requests
+from van311.db.updates import update_service_requests
 
 
-
-
-
-@patch("van311.db.update_data.upsert_page_data")
-@patch("van311.db.update_data.fetch_requests")
-@patch("van311.db.update_data.get_db_connection")
+@patch("van311.db.updates.upsert_page_data")
+@patch("van311.db.updates.fetch_requests")
+@patch("van311.db.updates.get_db_connection")
 def test_update_service_requests(
     mock_db_con,
     mock_requests,

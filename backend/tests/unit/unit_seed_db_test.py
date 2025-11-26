@@ -1,9 +1,9 @@
 from unittest.mock import call, patch
 
-from van311.db.seed_db import seed_database
+from van311.db.seeding import seed_database
 
-@patch("van311.db.seed_db.tqdm")
-@patch("van311.db.seed_db.get_db_connection")
+@patch("van311.db.seeding.tqdm")
+@patch("van311.db.seeding.get_db_connection")
 def test_seed_database_success(mock_get_con, mock_tqdm, database_mocks):
     db_con = database_mocks["db_con"]
     pbar_yielded = database_mocks["pbar_instance"]
@@ -14,12 +14,12 @@ def test_seed_database_success(mock_get_con, mock_tqdm, database_mocks):
 
     with (
         patch(
-            "van311.db.seed_db.create_db_table"
+            "van311.db.seeding.create_db_table"
         ) as mock_create_table,
         patch(
-            "van311.db.seed_db.subtract_months_from_today"
+            "van311.db.seeding.subtract_months_from_today"
         ) as mock_month_operation,
-        patch("van311.db.seed_db._seed_month") as mock_seed_month,
+        patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_month_operation.side_effect = [(7, 2025), (8, 2025), (9, 2025)]
 
@@ -44,8 +44,8 @@ def test_seed_database_success(mock_get_con, mock_tqdm, database_mocks):
 
 
 @patch("builtins.print")
-@patch("van311.db.seed_db.tqdm")
-@patch("van311.db.seed_db.get_db_connection")
+@patch("van311.db.seeding.tqdm")
+@patch("van311.db.seeding.get_db_connection")
 def test_seed_database_db_connection_failiure(
     mock_get_con, mock_tqdm, mock_print, database_mocks
 ):
@@ -57,12 +57,12 @@ def test_seed_database_db_connection_failiure(
 
     with (
         patch(
-            "van311.db.seed_db.create_db_table"
+            "van311.db.seeding.create_db_table"
         ) as mock_create_table,
         patch(
-            "van311.db.seed_db.subtract_months_from_today"
+            "van311.db.seeding.subtract_months_from_today"
         ) as mock_month_operation,
-        patch("van311.db.seed_db._seed_month") as mock_seed_month,
+        patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_month_operation.side_effect = [(7, 2025), (8, 2025), (9, 2025)]
 
@@ -81,8 +81,8 @@ def test_seed_database_db_connection_failiure(
 
 
 @patch("builtins.print")
-@patch("van311.db.seed_db.tqdm")
-@patch("van311.db.seed_db.get_db_connection")
+@patch("van311.db.seeding.tqdm")
+@patch("van311.db.seeding.get_db_connection")
 def test_seed_database_db_creation_failiure(
     mock_get_con, mock_tqdm, mock_print, database_mocks
 ):
@@ -94,12 +94,12 @@ def test_seed_database_db_creation_failiure(
 
     with (
         patch(
-            "van311.db.seed_db.create_db_table"
+            "van311.db.seeding.create_db_table"
         ) as mock_create_table,
         patch(
-            "van311.db.seed_db.subtract_months_from_today"
+            "van311.db.seeding.subtract_months_from_today"
         ) as mock_month_operation,
-        patch("van311.db.seed_db._seed_month") as mock_seed_month,
+        patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_create_table.side_effect = Exception("Database creation failiure")
         mock_month_operation.side_effect = [(7, 2025), (8, 2025), (9, 2025)]
@@ -119,8 +119,8 @@ def test_seed_database_db_creation_failiure(
 
 
 @patch("builtins.print")
-@patch("van311.db.seed_db.tqdm")
-@patch("van311.db.seed_db.get_db_connection")
+@patch("van311.db.seeding.tqdm")
+@patch("van311.db.seeding.get_db_connection")
 def test_seed_database_failiure_mid_seed(
     mock_get_con, mock_tqdm, mock_print, database_mocks
 ):
@@ -132,12 +132,12 @@ def test_seed_database_failiure_mid_seed(
 
     with (
         patch(
-            "van311.db.seed_db.create_db_table"
+            "van311.db.seeding.create_db_table"
         ) as mock_create_table,
         patch(
-            "van311.db.seed_db.subtract_months_from_today"
+            "van311.db.seeding.subtract_months_from_today"
         ) as mock_month_operation,
-        patch("van311.db.seed_db._seed_month") as mock_seed_month,
+        patch("van311.db.seeding._seed_month") as mock_seed_month,
     ):
         mock_seed_month.side_effect = [None, Exception("Seeding failiure mid cycle")]
         mock_month_operation.side_effect = [(7, 2025), (8, 2025), (9, 2025)]
