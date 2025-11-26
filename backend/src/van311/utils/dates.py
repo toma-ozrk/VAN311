@@ -12,8 +12,9 @@ def subtract_months_from_today(n):
 def calculate_day_difference(open_t: str, close_t: str):
     open_t_date = date.fromisoformat(open_t.split("T")[0])
     close_t_date = date.fromisoformat(close_t)
+    days_elapsed = (close_t_date - open_t_date).days
 
-    return (close_t_date - open_t_date).days
+    return 0 if days_elapsed < 0 else days_elapsed
 
 def timestamp_to_date_obj(ts):
     time_split = ts.split("T")
