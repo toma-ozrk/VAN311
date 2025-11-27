@@ -1,4 +1,4 @@
-from van311.db.metrics import (
+from van311.db.aggregation import (
     get_citywide_average_resolution_time,
     get_citywide_average_update_time,
     get_citywide_open_requests,

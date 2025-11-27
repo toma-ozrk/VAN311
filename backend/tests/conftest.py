@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from van311.db.metrics import create_db_metrics_table
+from van311.db.aggregation import create_db_metrics_table
 
 
 @pytest.fixture
