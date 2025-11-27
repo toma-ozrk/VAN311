@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from van311.api import fetch_requests
-from van311.database import get_db_connection, upsert_page_data
+from van311.db.core import get_db_connection, upsert_page_data
+from van311.ingestion.fetch_requests import fetch_requests
 
 UPDATE_INTERVAL_SECONDS = 1800
 
@@ -21,6 +21,10 @@ def update_service_requests():
         print(f"Update finished. Sleeping for {UPDATE_INTERVAL_SECONDS} seconds.")
     except Exception as e:
         print(f"CRITICAL ERROR during update: {e}.")
+
+
+def update_metrics():
+    pass
 
 
 if __name__ == "__main__":

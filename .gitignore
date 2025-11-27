@@ -6,4 +6,7 @@ __pycache__
 .env
 .DS_Store
 .pytest_cache
-ARCHIVE
+requirements.txt
+.zed
+*.egg-info
+uv.lock
