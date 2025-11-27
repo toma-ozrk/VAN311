@@ -1,4 +1,5 @@
-vancouver.db
+*.db
+*.db-journal
 internal
 __pycache__
 .venv
