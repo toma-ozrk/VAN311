@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 
+from van311.routers.metrics import router
+
 app = FastAPI()
+app.include_router(router)
 
 
 @app.get("/")
