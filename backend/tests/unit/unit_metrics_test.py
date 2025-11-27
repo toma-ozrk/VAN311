@@ -1,7 +1,4 @@
-from unittest.mock import Mock
-
 from van311.db.metrics import (
-    calculate_city_wide_metrics,
     get_citywide_average_resolution_time,
     get_citywide_average_update_time,
     get_citywide_open_requests,
