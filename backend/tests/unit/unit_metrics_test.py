@@ -251,3 +251,13 @@ def test_ni_volume(db_metrics_connection):
 
 
 # # ------ NULL TEST ------
+
+
+def test_null_neighbourhood_volume(db_metrics_connection):
+    con = db_metrics_connection
+    get_null_neighbourhood_volume(con)
+
+    data = con.execute("""SELECT metric_value FROM metric_aggregates""")
+    row = data.fetchone()
+
+    assert row[0] == 1
