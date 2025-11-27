@@ -30,6 +30,14 @@ The system implements techniques to handle known deficiencies in the public API:
 
 - **Statistical Accuracy:** The system correctly distinguishes between the **Total Workload** (Volume including NULL locations) and **Analyzable Performance** (Metrics calculated only on confirmed location data), ensuring all reported averages are statistically sound.
 
+### 3\. Stability and Automation
+
+- **Continuous Integration (CI):** Implemented using **GitHub Actions** to automatically run the test suite upon every commit or pull request. This ensures code merges only happen if all data contracts and business logic pass verification.
+
+- **Comprehensive Testing:** The test suite focuses on the **Testing Pyramid** approach, prioritizing:
+  - **Unit Tests of Flow:** Utilizing mocking to test orchestrator loops (while True) and resource cleanup contracts.
+  - **Integration Tests:** WIP
+
 ## 📈 Implemented Metrics
 
 | Metric        | Calculation                                  | Aggregation Levels                                                         |
@@ -42,11 +50,13 @@ The system implements techniques to handle known deficiencies in the public API:
 
 - **Backend Framework:** Python (FastAPI)
 
+- **CI/CD:** Github Actions, Pytest
+
 - **Data Analysis:** Python (requests, datetime, hashlib)
 
 - **Database:** SQLite (SQLAlchemy ORM for future scaling planned)
 
-- **Job Scheduling:** RQ / Redis.
+- **Job Scheduling:** RQ / Redis (Planned integration)
 
 ## Getting Started Locally
 
