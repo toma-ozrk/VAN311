@@ -23,9 +23,5 @@ def update_service_requests():
         print(f"CRITICAL ERROR during update: {e}.")
 
 
-def update_metrics():
-    pass
-
-
 if __name__ == "__main__":
     update_service_requests()
