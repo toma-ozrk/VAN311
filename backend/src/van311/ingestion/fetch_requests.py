@@ -4,7 +4,7 @@ import requests
 
 
 def fetch_requests(
-    limit: int = 5,
+    limit: int = 50,
     offs: int = 0,
     year: int = 0,
     month: int = 0,

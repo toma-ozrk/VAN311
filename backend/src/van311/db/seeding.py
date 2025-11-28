@@ -10,6 +10,8 @@ def seed_database():
             get_db_connection() as con,
             tqdm(total=59000, desc="😋 Seeding Database") as pbar,
         ):
+            con.execute("PRAGMA journal_mode=WAL")
+            con.execute("PRAGMA synchronous=NORMAL")
             create_db_table(con)
             for i in reversed(range(0, 3)):
                 month, year = subtract_months_from_today(i)

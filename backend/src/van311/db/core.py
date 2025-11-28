@@ -41,7 +41,7 @@ DB_PATH = PROJECT_ROOT / "data" / "vancouver.db"
 
 
 def get_db_connection(db_path=DB_PATH, db_path_string=""):
-    con = sqlite3.connect(db_path if not db_path_string else db_path_string)
+    con = sqlite3.connect(db_path if not db_path_string else db_path_string, timeout=30)
     con.row_factory = sqlite3.Row
     return con
 
