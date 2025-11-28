@@ -2,11 +2,13 @@ name: Python application
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+      - feat/job-queue-and-dockerization
 
   pull_request:
     branches: ["main"]
-    
+
 permissions:
   contents: read
 
