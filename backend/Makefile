@@ -4,7 +4,7 @@ test:
 dev:
 	uv run uvicorn van311.main:app --reload
 
-seed:
+seed-db:
 	uv run python -m van311.db.seeding
 
 schedule-jobs:
