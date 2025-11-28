@@ -16,5 +16,5 @@ def data():
 
 @router.get("/data/open-requests", response_model=DataOpenResponse)
 def get_open_requests():
-    con = get_db_connection()
-    return DataOpenResponse(message=SUCCESS_MESSAGE, data=retrieve_open(con))
+    with get_db_connection() as con:
+        return DataOpenResponse(message=SUCCESS_MESSAGE, data=retrieve_open(con))
