@@ -64,7 +64,7 @@ def retrieve_area_list(con):
 
 def retrieve_null(con):
     query = con.execute(
-        """SELECT metric_value FROM metric_aggregates WHERE local_area = 'UNKNOWN_AREA'"""
+        """SELECT metric_value FROM metric_aggregates WHERE local_area = 'UNKNOWN_AREA' AND issue_type = 'UNKNOWN_ISSUE'"""
     )
     data = query.fetchone()
     return int(data[0])
