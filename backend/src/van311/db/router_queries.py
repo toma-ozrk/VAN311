@@ -17,18 +17,36 @@ def retrieve_citywide(con):
     return metric
 
 
-def retrieve_area(con, area):
+def retrieve_areas_all(con):
     data = con.execute(
-        f"""SELECT issue_type, metric_name, metric_value FROM metric_aggregates WHERE local_area = '{area}' AND issue_type = 'CITYWIDE'"""
+        """SELECT local_area, metric_name, metric_value FROM metric_aggregates WHERE issue_type = 'CITYWIDE' AND local_area != 'CITYWIDE'"""
     )
     rows = data.fetchall()
     metric = [AreaMetricItem(**row) for row in rows]
     return metric
 
 
+def retrieve_area(con, area):
+    data = con.execute(
+        f"""SELECT metric_name, metric_value FROM metric_aggregates WHERE local_area = '{area}' AND issue_type = 'CITYWIDE'"""
+    )
+    rows = data.fetchall()
+    metric = [BaseMetricItem(**row) for row in rows]
+    return metric
+
+
 def retrieve_issue(con, issue):
     data = con.execute(
-        f"""SELECT local_area, metric_name, metric_value FROM metric_aggregates WHERE issue_type = '{issue}' AND local_area = 'CITYWIDE'"""
+        f"""SELECT metric_name, metric_value FROM metric_aggregates WHERE issue_type = '{issue}' AND local_area = 'CITYWIDE'"""
+    )
+    rows = data.fetchall()
+    metric = [BaseMetricItem(**row) for row in rows]
+    return metric
+
+
+def retrieve_issues_all(con):
+    data = con.execute(
+        """SELECT issue_type, metric_name, metric_value FROM metric_aggregates WHERE issue_type != 'CITYWIDE' AND local_area = 'CITYWIDE'"""
     )
     rows = data.fetchall()
     metric = [IssueMetricItem(**row) for row in rows]

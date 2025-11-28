@@ -12,11 +12,11 @@ class BaseMetricItem(BaseModel):
 
 
 class AreaMetricItem(BaseMetricItem):
-    issue_type: str
+    local_area: str
 
 
 class IssueMetricItem(BaseMetricItem):
-    local_area: str
+    issue_type: str
 
 
 class AreaIssueMetricItem(BaseMetricItem):
@@ -40,7 +40,7 @@ class DataOpenItem(BaseModel):
 # ------ RESPONSE MODELS ------
 
 
-class CitywideResponse(BaseModel):
+class BaseResponse(BaseModel):
     message: str
     timestamp: str = str(datetime.now())
     data: List[BaseMetricItem]
