@@ -2,7 +2,7 @@ import hashlib
 from dataclasses import dataclass
 from typing import Optional
 
-from van311.utils.dates import calculate_day_difference, calculate_timestamp_difference
+from ..utils.dates import calculate_day_difference, calculate_timestamp_difference
 
 
 @dataclass

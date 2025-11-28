@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from van311.db.core import get_db_connection, upsert_page_data
-from van311.ingestion.fetch_requests import fetch_requests
+from ..ingestion.fetch_requests import fetch_requests
+from .core import get_db_connection, upsert_page_data
 
 UPDATE_INTERVAL_SECONDS = 1800
 

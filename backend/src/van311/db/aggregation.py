@@ -2,7 +2,7 @@ from datetime import datetime
 
 from tqdm import tqdm
 
-from van311.db.core import get_db_connection
+from .core import get_db_connection
 
 FLAG_CITYWIDE = "CITYWIDE"
 FLAG_UNKNOWN_AREA = "UNKNOWN_AREA"

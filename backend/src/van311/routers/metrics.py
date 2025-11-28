@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from van311.db.core import get_db_connection
-from van311.db.router_queries import (
+from ..db.core import get_db_connection
+from ..db.router_queries import (
     retrieve_area,
     retrieve_area_issue,
     retrieve_areas_all,
@@ -9,7 +9,7 @@ from van311.db.router_queries import (
     retrieve_issue,
     retrieve_issues_all,
 )
-from van311.models.api_models import (
+from ..models.api_models import (
     AreaIssueResponse,
     AreaResponse,
     BaseResponse,

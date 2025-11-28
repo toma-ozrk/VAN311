@@ -1,11 +1,11 @@
-from van311.db.core import get_db_connection
-from van311.models.api_models import (
+from ..models.api_models import (
     AreaIssueMetricItem,
     AreaMetricItem,
     BaseMetricItem,
     DataOpenItem,
     IssueMetricItem,
 )
+from .core import get_db_connection
 
 
 def retrieve_citywide(con):

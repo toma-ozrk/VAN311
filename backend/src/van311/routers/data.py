@@ -1,13 +1,13 @@
 from fastapi import APIRouter
 
-from van311.db.core import get_db_connection
-from van311.db.router_queries import (
+from ..db.core import get_db_connection
+from ..db.router_queries import (
     retrieve_area_list,
     retrieve_issue_list,
     retrieve_null,
     retrieve_open,
 )
-from van311.models.api_models import DataOpenResponse, ListResponse, NullResponse
+from ..models.api_models import DataOpenResponse, ListResponse, NullResponse
 
 SUCCESS_MESSAGE = "Successfully retrieved data"
 

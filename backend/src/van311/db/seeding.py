@@ -1,7 +1,7 @@
 from tqdm import tqdm
 
-from van311.db.core import _seed_month, create_db_table, get_db_connection
-from van311.utils.dates import subtract_months_from_today
+from ..utils.dates import subtract_months_from_today
+from .core import _seed_month, create_db_table, get_db_connection
 
 
 def seed_database():
