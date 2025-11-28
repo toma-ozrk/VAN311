@@ -8,7 +8,9 @@ def seed_database():
     try:
         with (
             get_db_connection() as con,
-            tqdm(total=59000, desc="😋 Seeding Database") as pbar,
+            tqdm(
+                total=70000, desc="😋 Seeding Database (estimated time / items)"
+            ) as pbar,
         ):
             con.execute("PRAGMA journal_mode=WAL")
             con.execute("PRAGMA synchronous=NORMAL")

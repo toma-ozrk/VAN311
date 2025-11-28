@@ -34,4 +34,5 @@ def fetch_requests(
 
     except requests.exceptions.RequestException as e:
         print(f"Error during API fetch: {e}")
+        raise
         return []

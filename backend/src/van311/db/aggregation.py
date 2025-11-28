@@ -7,6 +7,8 @@ from .core import get_db_connection
 FLAG_CITYWIDE = "CITYWIDE"
 FLAG_UNKNOWN_AREA = "UNKNOWN_AREA"
 FLAG_UNKNOWN_ISSUE = "UNKNOWN_ISSUE"
+METRICS_INTERVAL_MINUTES = 20
+GRACE_TIME_SECONDS = 10
 
 
 # ------ HELPER FUNCTIONS ------
@@ -333,10 +335,14 @@ def calculate_metrics():
             calculate_neighbourhood_issue_metrics(con, pbar)
 
             con.commit()
-            print("--- Finished calculating metrics ---")
+            print(
+                f"------ Finished calculating metrics. Sleeping for {METRICS_INTERVAL_MINUTES} minutes  ------"
+            )
 
     except Exception as e:
-        print(f"CRITICAL ERROR during metrics calculation: {e}")
+        print(
+            f"CRITICAL ERROR during update: {e}.\n ------ Retrying in {GRACE_TIME_SECONDS} ------"
+        )
 
 
 if __name__ == "__main__":
