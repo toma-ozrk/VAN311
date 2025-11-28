@@ -76,8 +76,6 @@ def retrieve_open(con):
         long, lat, time_to_update FROM service_requests WHERE close_ts IS NULL"""
     )
     rows = query.fetchall()
-    # data = [DataOpenItem(**row) for row in rows]
-    # return data
     return [DataOpenItem(**row) for row in rows]
 
 
