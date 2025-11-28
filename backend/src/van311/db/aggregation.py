@@ -335,9 +335,9 @@ def calculate_metrics():
             calculate_neighbourhood_issue_metrics(con, pbar)
 
             con.commit()
-            print(
-                f"------ Finished calculating metrics. Sleeping for {METRICS_INTERVAL_MINUTES} minutes  ------"
-            )
+        print(
+            f"------ Finished calculating metrics. Sleeping for {METRICS_INTERVAL_MINUTES} minutes  ------"
+        )
 
     except Exception as e:
         print(
