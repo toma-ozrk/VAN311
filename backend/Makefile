@@ -6,6 +6,7 @@ dev:
 
 seed-db:
 	uv run python -m van311.db.seeding
+	uv run python -m van311.db.aggregation
 
 schedule-jobs:
 	uv run python -m van311.jobs.scheduler
