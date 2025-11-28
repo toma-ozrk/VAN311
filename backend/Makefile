@@ -1,5 +1,5 @@
 test:
-	uv run pytest
+	uv run pytest -v
 
 dev:
 	uv run uvicorn van311.main:app --reload

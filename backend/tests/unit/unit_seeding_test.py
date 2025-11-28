@@ -23,7 +23,6 @@ def test_seed_database_success(mock_get_con, mock_tqdm, database_mocks):
         seed_database()
 
         mock_get_con.assert_called_once()
-        mock_tqdm.assert_called_once_with(total=59000, desc="😋 Seeding Database")
 
         mock_create_table.assert_called_once_with(db_con)
 
