@@ -16,7 +16,7 @@ def main():
 
     scheduler.add_job(
         func=update_service_requests,
-        trigger=IntervalTrigger(seconds=UPDATE_INTERVAL_MINUTES),
+        trigger=IntervalTrigger(minutes=UPDATE_INTERVAL_MINUTES),
         id="ingest_job",
         replace_existing=True,
     )
