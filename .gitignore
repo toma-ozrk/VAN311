@@ -10,5 +10,4 @@ __pycache__
 requirements.txt
 .zed
 *.egg-info
-uv.lock
 *.old
