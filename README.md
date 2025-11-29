@@ -52,33 +52,62 @@ The system implements techniques to handle known deficiencies in the public API:
 
 - **CI/CD:** Github Actions, Pytest
 
-- **Data Analysis:** Python (requests, datetime, hashlib)
+- **Data Analysis:** Python
 
 - **Database:** SQLite (SQLAlchemy ORM for future scaling planned)
 
-- **Job Scheduling:** RQ / Redis (Planned integration)
+- **Job Scheduling:** APScheduler
+
+- **Portability:** Docker, Docker Compose
 
 ## Getting Started Locally
 
 ### Prerequisites
 
 1.  Clone this repository.
-2.  Install dependencies:
+2.  Make sure docker is installed.
+3.  (Optional) Make sure make command is installed on your machine.
 
-```python
-pip install -e .
+## Running the Project
+
+### 1\. `cd ./backend`
+
+### 2\. Build Docker Image (Run Once)
+
+```bash
+make build
 ```
 
-### Running the Project
+or
 
-**1\. Database Seeding (Run Once)**
-
-This script populates the database with 3 months of historical data (approx. 14 minutes), and calculates metrics:
-
-```python
-python backend/scripts/setup.py
+```bash
+docker compose --profile seed -f docker/docker-compose.yml run seed
 ```
 
-**2\. Running the Background Worker (For Continuous Updates)**
+### 3\. Seed Database (Run Once)
+
+```bash
+make seed-db
+```
+
+or
+
+```bash
+docker compose --profile seed -f docker/docker-compose.yml run seed
+```
+
+### 4\. Running the Background Worker (For Continuous Updates)
+
+```bash
+make scheduler
+```
+
+or
+
+```bash
+docker compose -f docker/docker-compose.yml up
+```
+
+### 5\. Starting Frontend
 
 - WIP
