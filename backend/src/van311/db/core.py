@@ -36,7 +36,7 @@ def _seed_month(con, month, year, pbar):
         # con.commit() # for partial seeding testing only
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[4]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DB_PATH = PROJECT_ROOT / "data" / "vancouver.db"
 
 

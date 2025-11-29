@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: van311-backend
+    command: api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/backend/data
+    restart: always
+
+  scheduler:
+    image: van311-backend
+    command: scheduler
+    volumes:
+      - ../data:/app/backend/data
+
+  seed:
+    image: van311-backend
+    command: seed-db
+    volumes:
+      - ../data:/app/backend/data
+    profiles: ["seed"]

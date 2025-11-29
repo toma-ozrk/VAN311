@@ -5,8 +5,10 @@ dev:
 	uv run uvicorn van311.main:app --reload
 
 seed-db:
-	uv run python -m van311.db.seeding
-	uv run python -m van311.db.aggregation
+	docker compose --profile seed -f docker/docker-compose.yml run seed
 
-schedule-jobs:
-	uv run python -m van311.jobs.scheduler
+build:
+	docker compose -f docker/docker-compose.yml build
+
+run:
+	docker compose -f docker/docker-compose.yml up

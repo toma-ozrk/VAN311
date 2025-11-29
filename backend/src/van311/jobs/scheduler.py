@@ -1,8 +1,8 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-from van311.db.aggregation import METRICS_INTERVAL_MINUTES, calculate_metrics
-from van311.db.updates import (
+from ..db.aggregation import METRICS_INTERVAL_MINUTES, calculate_metrics
+from ..db.updates import (
     GRACE_TIME_SECONDS,
     UPDATE_INTERVAL_MINUTES,
     update_service_requests,
