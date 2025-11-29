@@ -11,3 +11,5 @@ requirements.txt
 .zed
 *.egg-info
 *.old
+*.db-wal
+*.db-shm
