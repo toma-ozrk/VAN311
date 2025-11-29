@@ -4,7 +4,7 @@ from ..ingestion.fetch_requests import fetch_requests
 from .core import get_db_connection, upsert_page_data
 
 GRACE_TIME_SECONDS = 10
-UPDATE_INTERVAL_MINUTES = 3
+UPDATE_INTERVAL_MINUTES = 10
 
 
 def update_service_requests():
