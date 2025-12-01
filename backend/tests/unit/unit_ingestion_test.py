@@ -28,7 +28,6 @@ def test_fetch_requests(mock_get):
         {
             "order_by": "last_modified_timestamp DESC",
             "limit": 2,
-            "offset": 0,
         },
     )
 
@@ -44,15 +43,16 @@ def test_fetch_requests_seeding(mock_get):
 
     mock_get.return_value = mock_response
 
-    results = fetch_requests(year=2023, month=9, seeding=True)
+    ts = "2025-01-01T00:00:00+00:00"
+
+    results = fetch_requests(timestamp=ts)
 
     mock_get.assert_called_once_with(
         "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/3-1-1-service-requests/records",
         {
             "order_by": "service_request_open_timestamp ASC",
             "limit": 100,
-            "offset": 0,
-            "refine": 'service_request_open_timestamp:"2023/9"',
+            "where": f"service_request_open_timestamp > '{ts}'",
         },
     )
 
