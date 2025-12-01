@@ -29,10 +29,10 @@ def seed_database():
                 if not ts:
                     break
 
-                con.commit()
+                # con.commit()  # for partial seeding testing
                 sleep(SLEEP_INTERVAL)
 
-            # con.commit()
+            con.commit()
         print("--- Finished database seeding ---")
 
     except Exception as e:
