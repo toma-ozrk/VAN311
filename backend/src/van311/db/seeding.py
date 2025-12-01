@@ -1,7 +1,11 @@
+from time import sleep
+
 from tqdm import tqdm
 
 from ..utils.dates import subtract_months_from_today
-from .core import _seed_month, create_db_table, get_db_connection
+from .core import _seed_helper, create_db_table, get_db_connection
+
+SLEEP_INTERVAL = 1.8
 
 
 def seed_database():
@@ -15,11 +19,20 @@ def seed_database():
             con.execute("PRAGMA journal_mode=WAL")
             con.execute("PRAGMA synchronous=NORMAL")
             create_db_table(con)
-            for i in reversed(range(0, 3)):
-                month, year = subtract_months_from_today(i)
-                _seed_month(con, month, year, pbar)
 
-            con.commit()
+            month, year = subtract_months_from_today(2)
+
+            ts = f"{year}-{month}-01T00:00:00+00:00"
+            while True:
+                ts = _seed_helper(con, ts, pbar)
+
+                if not ts:
+                    break
+
+                con.commit()
+                sleep(SLEEP_INTERVAL)
+
+            # con.commit()
         print("--- Finished database seeding ---")
 
     except Exception as e:

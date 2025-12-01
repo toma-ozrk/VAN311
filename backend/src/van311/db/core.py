@@ -1,7 +1,6 @@
 import sqlite3
 from dataclasses import astuple
 from pathlib import Path
-from time import sleep
 
 from ..ingestion.fetch_requests import fetch_requests
 from ..models.service_request import ServiceRequest
@@ -17,23 +16,16 @@ def create_db_table(con):
     )
 
 
-def _seed_month(con, month, year, pbar):
-    SLEEP_INTERVAL = 1.8
+def _seed_helper(con, ts, pbar):
+    data = fetch_requests(timestamp=ts)
 
-    j = 0
-    while True:
-        offset = j * 100
-        data = fetch_requests(offs=offset, month=month, year=year, seeding=True)
+    if len(data) == 0:
+        return ""
 
-        upsert_page_data(con, data, seeding=True)
+    upsert_page_data(con, data, seeding=True)
+    pbar.update(100)
 
-        sleep(SLEEP_INTERVAL)
-        pbar.update(100)
-        if len(data) < 100:
-            break
-
-        j += 1
-        # con.commit() # for partial seeding testing only
+    return data[-1]["service_request_open_timestamp"]
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -58,3 +50,7 @@ def upsert_page_data(con, requests_data, seeding: bool = False):
                close_ts = EXCLUDED.close_ts, modified_ts = EXCLUDED.modified_ts""",
             astuple(req),
         )
+
+
+if __name__ == "__main__":
+    con = get_db_connection()
