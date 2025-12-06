@@ -81,7 +81,7 @@ make build
 or
 
 ```bash
-docker compose --profile seed -f docker/docker-compose.yml run seed
+docker compose -f docker/docker-compose.yml build
 ```
 
 ### 3\. Seed Database (Run Once)
