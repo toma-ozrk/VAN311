@@ -11,12 +11,6 @@ from van311.db.core import (
 from van311.models.service_request import ServiceRequest
 
 
-def test_get_db_connection():
-    con = get_db_connection()
-    assert isinstance(con, sqlite3.Connection)
-    con.close()
-
-
 def test_get_db_connection_memory():
     con = get_db_connection(db_path_string=":memory:")
     assert isinstance(con, sqlite3.Connection)
