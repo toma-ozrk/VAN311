@@ -43,6 +43,7 @@ The system implements techniques to handle known deficiencies in the public API:
 | Metric        | Calculation                                  | Aggregation Levels                                                         |
 | ------------- | -------------------------------------------- | -------------------------------------------------------------------------- |
 | avg_ttr       | Average time to close a request              | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local                |
+| avg_ttu       | Average time to update a request             | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local                |
 | volume        | Count of all requests                        | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local, Null location |
 | open_requests | Count of all requests where status is 'Open' | City-Wide Filtered, By neighbourhood, By issue, Hyper-Local                |
 
